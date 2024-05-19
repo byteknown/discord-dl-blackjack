@@ -19,14 +19,17 @@ async function getBank(userId) {
 // Function to update the bank balance
 async function updateBank(userId, newBalance) {
     return new Promise((resolve, reject) => {
-        db.run('db.run('UPDATE users SET bank = ? WHERE discordId = ?', [newBalance, userId], (err) => {
+        db.run('UPDATE users SET bank = ? WHERE discordId = ?', [newBalance, userId], function(err) {
             if (err) {
-                reject(err);
+                console.error(err.message);
+                reject(err); // Reject the promise with the error
             } else {
-                resolve();
+                console.log('Balance updated successfully.');
+                resolve(); // Resolve the promise
             }
         });
     });
 }
 
 module.exports = { getBank, updateBank };
+
