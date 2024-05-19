@@ -35,7 +35,7 @@ const { getBank, updateBank } = require('./bank.js');
 */
 
 
-module.exports = async (message, options) => {
+module.exports = async (message, options, betAmount) => {
 
     // check if all the variables given are valid
     if (!message) throw new Error("[MISSING_PARAMETER] The message or interaction parameter was not provided, was null or undefined.")
@@ -446,12 +446,37 @@ module.exports = async (message, options) => {
         }
 
         let finalEmbed = resultingEmbed[finalResult.result]
-       if (finalResult.result === "WIN") {
-       updateBank(user.Id, balanceString + bet*2);
-      } else if (finalResult.result === "LOSE") {
-          console.log("loser");
-          // Handle losing case
+       if (finalResult.result === "WIN" || finalResult.result === "SPLIT TIE-WIN") || finalResult.result === "SPLIT WIN-TIE") {
+       updateBank(user.Id, bankBalance + betAmount*2);
       }
+       if (finalResult.result === "LOSE" || finalResult.result === "SPLIT TIE-LOSE" || finalResult.result === "SPLIT LOSE-TIE") {
+          console.log("loser");
+      }
+       if (finalResult.result === "BLACKJACK" || finalResult.result === "SPLIT BLACKJACK-TIE" || finalResult.result === "SPLIT TIE-BLACKJACK") {
+       updateBank(user.Id, bankBalance + betAmount*2.5);
+      }
+        if (finalResult.result === "TIE" || finalResult.result === "DOUBLE TIE" || finalResult.result === "SPLIT TIE-TIE") {
+       updateBank(user.Id, bankBalance + betAmount);
+      }
+        if (finalResult.result === "DOUBLE WIN" || finalResult.result === " SPLIT WIN-WIN") {
+       updateBank(user.Id, bankBalance + betAmount*3);
+      }
+        if (finalResult.result === "DOUBLE LOSE" || finalResult.result === "SPLIT LOSE-LOSE") {
+       updateBank(user.Id, bankBalance - betAmount);
+      }
+        if (finalResult.result === "SPLIT WIN-LOSE" || finalResult.result === "SPLIT LOSE-WIN") {
+       updateBank(user.Id, bankBalance + betAmount);
+      }
+        if (finalResult.result === "SPLIT BLACKJACK-WIN" || finalResult.result === "SPLIT WIN-BLACKJACK") {
+       updateBank(user.Id, bankBalance + betAmount*3.5);
+      }
+        if (finalResult.result === "SPLIT BLACKJACK-LOSE" || finalResult.result === "SPLIT LOSE-BLACKJACK") {
+       updateBank(user.Id, bankBalance + betAmount*1.5);
+      }
+        if (finalResult.result === "SPLIT BLACKJACK-BLACKJACK") {
+       updateBank(user.Id, bankBalance + betAmount*4);
+      }
+       
         if (finalResult.method !== "None") {
             finalEmbed.description = finalResult.method
         }
