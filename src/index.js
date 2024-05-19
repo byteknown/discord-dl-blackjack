@@ -446,6 +446,12 @@ module.exports = async (message, options) => {
         }
 
         let finalEmbed = resultingEmbed[finalResult.result]
+       if (finalResult.result === "WIN") {
+       updateBank(
+      } else if (finalResult.result === "LOSE") {
+          console.log("loser");
+          // Handle losing case
+      }
         if (finalResult.method !== "None") {
             finalEmbed.description = finalResult.method
         }
@@ -463,13 +469,7 @@ module.exports = async (message, options) => {
         
         
     }
-  if (finalResult.result === "WIN") {
-    console.log("x2");
-    // Add money to the winner's account
-} else if (finalResult.result === "LOSE") {
-    console.log("loser");
-    // Handle losing case
-}
+  
     return finalResult;
     
 }
