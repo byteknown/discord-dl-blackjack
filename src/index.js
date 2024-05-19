@@ -458,7 +458,12 @@ module.exports = async (message, options) => {
         
         
     }
-   console.log(finalResult);
+  if (finalEmbed == "WIN"){
+     console.log("x2")
+  }
+   if (finalEmbed == "LOSE"){
+     console.log("loser")
+  }
     return finalResult;
     
 }
