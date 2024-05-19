@@ -230,6 +230,7 @@ module.exports = async (message, options) => {
 
    
    let bankBalance = await getBank(message.member.id);
+   let balanceString = bankBalance.toString();
 
     // set the embeds
     let winEmbed = { title: "You won!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
@@ -250,7 +251,7 @@ module.exports = async (message, options) => {
     let insPayEmbed = { title: "Insurance Payout!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
     let timeoutEmbed = { title: "Time's up!", color: 0xFF0000, description: "You took more than 30 seconds to respond. The time is up and the game has canceled.", fields: [], author: { name: message.member.user.tag, icon_url: message.member.displayAvatarURL() } } 
     let cancelEmbed = { title: "Game canceled.", color: 0xFF0000, description: "You decided to cancel your ongoing blackjack game.", fields: [], author: { name: message.member.displayName, icon_url: message.member.displayAvatarURL() } }
-    let generalEmbed = normalEmbed === false ? options.normalEmbedContent : { title: "Blackjack", color: Math.floor(Math.random() * (0xffffff + 1)), fields: [{ name: "Your hand", value: "", inline: true }, { name: `Dealer's hand`, value: "", inline: true }, { name: "Bank Balance", value: bankBalance, inline: true }], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let generalEmbed = normalEmbed === false ? options.normalEmbedContent : { title: "Blackjack", color: Math.floor(Math.random() * (0xffffff + 1)), fields: [{ name: "Your hand", value: "", inline: true }, { name: `Dealer's hand`, value: "", inline: true }, { name: "Bank Balance", value: balanceString, inline: true }], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
 
     // set the filters
     let allFilter = ["h", "hit", "s", "stand", "cancel"]
