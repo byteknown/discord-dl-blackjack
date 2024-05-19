@@ -19,7 +19,7 @@ async function getBank(userId) {
 // Function to update the bank balance
 async function updateBank(userId, newBalance) {
     return new Promise((resolve, reject) => {
-        db.run('INSERT OR REPLACE INTO users (userId, balance) VALUES (?, ?)', [userId, newBalance], (err) => {
+        db.run('INSERT OR REPLACE INTO users (discordId, bank) VALUES (?, ?)', [userId, newBalance], (err) => {
             if (err) {
                 reject(err);
             } else {
