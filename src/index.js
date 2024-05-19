@@ -458,9 +458,7 @@ module.exports = async (message, options) => {
           value: `Cards: ${finalResult.dcard.map(c => `[\`${c.emoji} ${c.rank}\`](https://google.com)`).join(" ")}\nTotal: ${finalResult.dcard.map(card => card.value).reduce((a, b) => b+a)}`,
           inline: true
         })
-        finalEmbed.fields.push({ Bank: balanceString
-        }
-      );
+        finalEmbed.fields.push({ name: 'Bank', value: balanceString });
         options.commandType === "message" ? message.channel.send({ embeds: [finalEmbed] }) : message.channel.send({ embeds: [finalEmbed] })
         
         
