@@ -457,7 +457,7 @@ module.exports = async (message, options) => {
           name: `${message.client.user.username}'s hand`, 
           value: `Cards: ${finalResult.dcard.map(c => `[\`${c.emoji} ${c.rank}\`](https://google.com)`).join(" ")}\nTotal: ${finalResult.dcard.map(card => card.value).reduce((a, b) => b+a)}`,
           inline: true
-        }
+        })
         finalEmbed.fields.push({ Bank: balanceString
         }
       );
