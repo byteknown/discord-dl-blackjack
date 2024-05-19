@@ -3,7 +3,7 @@ const db = new sqlite3.Database('../users.db');
 
 async function getBank(userId) {
     return new Promise((resolve, reject) => {
-        db.get('SELECT balance FROM users WHERE userId = ?', [userId], (err, row) => {
+        db.get('SELECT bank FROM users WHERE userId = ?', [userId], (err, row) => {
             if (err) {
                 reject(err);
             } else {
