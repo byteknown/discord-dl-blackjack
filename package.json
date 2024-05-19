@@ -1,6 +1,6 @@
 {
-  "name": "discord-blackjack",
-  "version": "4.0.0",
+  "name": "discord-dl-blackjack",
+  "version": "4.0.1",
   "description": "A blackjack game for Discord",
   "main": "index.js",
   "typings": "types/index.d.ts",
@@ -9,13 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/3061LRTAGSPKJMORMRT/discord-blackjack"
+    "url": "https://github.com/byteknown/discord-dl-blackjack"
   },
   "funding": {
     "type": "individual",
-    "url": "https://ko-fi.com/3061lrtagspkjmormrt"
+    "url": "https://ko-fi.com/moonhell"
   },
-  "homepage": "https://17ashishemmanuel.gitbook.io/discord-blackjack/options",
   "keywords": [
     "discord",
     "discord.js",
@@ -24,7 +23,7 @@
     "discord-blackjack",
     "discord.js-blackjack"
   ],
-  "author": "Ashish Emmanuel",
+  "author": "Moonhell",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.6.0",
