@@ -447,7 +447,7 @@ module.exports = async (message, options) => {
 
         let finalEmbed = resultingEmbed[finalResult.result]
        if (finalResult.result === "WIN") {
-       updateBank(
+       updateBank(user.Id, balanceString + bet*2);
       } else if (finalResult.result === "LOSE") {
           console.log("loser");
           // Handle losing case
