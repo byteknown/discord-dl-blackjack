@@ -6,7 +6,7 @@ const db = new sqlite3.Database(dbPath);
 
 async function getBank(userId) {
     return new Promise((resolve, reject) => {
-        db.get('SELECT bank FROM users WHERE userId = ?', [userId], (err, row) => {
+        db.get('SELECT bank FROM users WHERE discordId = ?', [userId], (err, row) => {
             if (err) {
                 reject(err);
             } else {
