@@ -323,21 +323,6 @@ module.exports = async (message, options) => {
         }
     }
 
-    // else if (dealervalue === 21 && yourvalue != 21) {
-    //     if (options.resultEmbed === true) {
-    //         loseEmbed.description = "You lost (dealer had blackjack)."
-    //         loseEmbed.fields.push({ name: "Your hand", value: `Cards: [\`${yourcards[0].emoji} ${yourcards[0].rank}\`](https://google.com) [\`${yourcards[1].emoji} ${yourcards[1].rank}\`](https://google.com)\nTotal: ${yourvalue}` })
-    //         loseEmbed.fields.push({ name: "Dealer's hand", value: `Cards: [\`${dealercards[0].emoji} ${dealercards[0].rank}\`](https://google.com) [\`${dealercards[1].emoji} ${dealercards[1].rank}\`](https://google.com)\nTotal: ${dealervalue}` })
-    //         commandType === "message" ? message.channel.send({ embeds: [loseEmbed] }) : message.channel.send({ embeds: [loseEmbed] })
-    //     }
-
-    //     return {
-    //         result: "LOSE",
-    //         method: "You lost (dealer had blackjack).",
-    //         ycard: yourcards,
-    //         dcard: dealercards
-    //     }
-    // }
 
     else if (dealervalue === 21 && dealervalue == yourvalue) {
         if (options.resultEmbed === true) {
@@ -354,6 +339,11 @@ module.exports = async (message, options) => {
             dcard: dealercards
         }
     }
+
+   while (dealervalue < 17) {
+    dealercards.push(currentDeck.pop()); // Draw another card
+    dealervalue = dealercards.map(c => c.value).reduce((a, b) => b + a); // Update dealer's total value
+}
 
     const editReply = async (msg, reply, commandType) => {
         if (commandType === "message") {
