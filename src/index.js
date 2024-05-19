@@ -458,12 +458,13 @@ module.exports = async (message, options) => {
         
         
     }
-  if (finalEmbed == "WIN"){
-     console.log("x2")
-  }
-   if (finalEmbed == "LOSE"){
-     console.log("loser")
-  }
+  if (finalResult.result === "WIN") {
+    console.log("x2");
+    // Add money to the winner's account
+} else if (finalResult.result === "LOSE") {
+    console.log("loser");
+    // Handle losing case
+}
     return finalResult;
     
 }
