@@ -458,6 +458,7 @@ module.exports = async (message, options) => {
         
         
     }
+   console.log(finalResult);
     return finalResult;
     
 }
