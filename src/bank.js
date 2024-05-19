@@ -7,7 +7,7 @@ async function getBank(userId) {
             if (err) {
                 reject(err);
             } else {
-                resolve(row ? row.balance : 0);
+                resolve(row ? row.bank : 0);
             }
         });
     });
