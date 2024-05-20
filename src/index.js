@@ -37,8 +37,8 @@ const retrieve = require('../../../commands/blackjack.js');
 
 
 module.exports = async (message, options) => {
-   const betAmount = retrieve.getBetAmount();
-console.log('Type of betAmount:', typeof betAmount);
+   const betAmount = interaction.options.getInteger('bet');
+    console.log('Received bet amount:', betAmount);
     // Ensure betAmount is provided and is a number
     if (!Number.isInteger(betAmount)) {
         throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
