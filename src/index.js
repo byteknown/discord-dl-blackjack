@@ -8,18 +8,13 @@ const { getBank, updateBank } = require('./bank.js');
 
 
 
-module.exports = async (interaction, options) => {
-   const betAmount = interaction.options.getInteger('bet');
-    console.log('Received bet amount:', betAmount);
-    // Ensure betAmount is provided and is a number
-    if (!Number.isInteger(betAmount)) {
-        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
-    }
+module.exports = async (message, options) => {
+
     // check if all the variables given are valid
-    if (!interaction) throw new Error("[MISSING_PARAMETER] interaction parameter was not provided, was null or undefined.")
+    if (!message) throw new Error("[MISSING_PARAMETER] The message or interaction parameter was not provided, was null or undefined.")
     
-    // check if commandInteraction aren't something made up
-    if (!(interaction instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The interaction parameter provided is not valid.")
+    // check if message and commandInteraction aren't something made up
+    if (!(message instanceof Discord.Message) && !(message instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The message or interaction parameter provided is not valid.")
 
     // set all the options
     if (!options) options = {} // if options were not provided, make an empty object
@@ -31,17 +26,28 @@ module.exports = async (interaction, options) => {
     options.resultEmbed === false ? options.resultEmbed = false : options.resultEmbed = true // check if the result embed should be displayed
     options.normalEmbed === false ? options.normalEmbed = false : options.normalEmbed = true // check if they want the default embed when playing
     !options.emojis ? options.emojis = {} : options.emojis
-    
+    const betAmount = options.getInteger('bet');
+    console.log('Received bet amount:', betAmount);
+    // Ensure betAmount is provided and is a number
+    if (!Number.isInteger(betAmount)) {
+        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
+    }
+   
     options.emojis = {
         clubs: options.emojis?.clubs || "♣️",
         spades: options.emojis?.spades || "♠️",
         hearts: options.emojis?.hearts || "♥️",
         diamonds: options.emojis?.diamonds || "♦️"
     }
-     
+   
     // set what type the interaction is
-    let commandType = "interaction"
-    
+    let commandType
+    if (message instanceof Discord.Message) {
+        commandType = "message"
+    } else if (message instanceof Discord.CommandInteraction) {
+        commandType = "interaction"
+    }
+
     options.commandType = commandType
 
     // check if options is an object
@@ -64,20 +70,30 @@ module.exports = async (interaction, options) => {
 
     let starterMessage;
 
-    if (commandType === "interaction" && !interaction.deferred && !interaction.replied) {
-    starterMessage = await interaction.deferReply();
-}
+    if (commandType === "interaction" && !message.deferred && !message.replied) {
+        starterMessage = await message.deferReply()
+    } else if (commandType === "message") {
+        starterMessage = await message.channel.send({ embeds: [{ title: "Game is starting.", description: "The game is starting soon, get ready!" }] })
+    }
 
-// Check if the user is already playing a game
-if (games.has(interaction.user.id)) {
-    if (commandType === "interaction") {
-        if (interaction.replied || interaction.deferred) {
-            interaction.followUp({ content: "You are already playing a game!" });
-        } else {
-            interaction.reply({ content: "You are already playing a game!" });
+    // check if the user is playing a game
+    if (games.has(message.member.id)) {
+        if (commandType === "message") {
+            message.reply("You are already playing a game!")
+        } else if (commandType === "interaction") {
+            if (message.replied || message.deferred) {
+                message.followUp({ content: "You are already playing a game!" })
+            } else {
+                message.reply({ content: "You are already playing a game!" })
+            }
+        }
+        return {
+            result: "None",
+            method: "None",
+            ycard: "None",
+            dcard: "None"
         }
     }
-}
 
 // Return a default result if needed
 return {
