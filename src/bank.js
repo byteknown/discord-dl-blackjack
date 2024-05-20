@@ -33,18 +33,31 @@ async function updateBank(userId, newBalance) {
 
 async function updatePunctuation(userId, betAmount) {
     return new Promise((resolve, reject) => {
-        let punctuation = betAmount/1000000;
-        db.run('UPDATE leaderBoard SET punctuation = ? WHERE discordId = ?', [punctuation, userId], function(err) {
+        let punctuation = betAmount / 1000000;
+
+        // First, get the current punctuation
+        db.get('SELECT punctuation FROM leaderBoard WHERE discordId = ?', [userId], function(err, row) {
             if (err) {
                 console.error(err.message);
-                reject(err); // Reject the promise with the error
-            } else {
-                console.log('Punctuation updated successfully.');
-                resolve(); // Resolve the promise
+                return reject(err); // Reject the promise with the error
             }
+
+            let prevPunct = row ? row.punctuation : 0; // Handle the case where the row might not exist
+            let realPunct = prevPunct + punctuation;
+            // Then, update the punctuation
+            db.run('UPDATE leaderBoard SET punctuation = ? WHERE discordId = ?', [realPunct, userId], function(err) {
+                if (err) {
+                    console.error(err.message);
+                    return reject(err); // Reject the promise with the error
+                }
+
+                console.log('Punctuation updated successfully.');
+                resolve(); // Resolve the promise successfully
+            });
         });
     });
 }
+
 
 module.exports = { getBank, updateBank, updatePunctuation };
 
