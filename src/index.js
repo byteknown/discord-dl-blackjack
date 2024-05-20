@@ -64,12 +64,12 @@ module.exports = async (interaction, options) => {
 
     let starterMessage;
 
-    // defer the reply if the commandType is interaction and if the reply has not been deffered
-    if (commandType === "interaction") {
-    starterMessage = await interaction.deferReply();
+    if (commandType === "interaction" && !interaction.deferred && !interaction.replied) {
+    starterMessage = await interaction.followUp();
 }
-    // check if the user is playing a game
-    if (games.has(interaction.user.id)) {
+
+// Check if the user is already playing a game
+if (games.has(interaction.user.id)) {
     if (commandType === "interaction") {
         if (interaction.replied || interaction.deferred) {
             interaction.followUp({ content: "You are already playing a game!" });
@@ -78,12 +78,14 @@ module.exports = async (interaction, options) => {
         }
     }
 }
-        return {
-            result: "None",
-            method: "None",
-            ycard: "None",
-            dcard: "None"
-        }
+
+// Return a default result if needed
+return {
+    result: "None",
+    method: "None",
+    ycard: "None",
+    dcard: "None"
+};
     
     
 
