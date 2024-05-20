@@ -26,7 +26,7 @@ module.exports = async (message, options) => {
     options.resultEmbed === false ? options.resultEmbed = false : options.resultEmbed = true // check if the result embed should be displayed
     options.normalEmbed === false ? options.normalEmbed = false : options.normalEmbed = true // check if they want the default embed when playing
     !options.emojis ? options.emojis = {} : options.emojis
-    const betAmount = options.getInteger('bet');
+    const betAmount = interaction.options.getInteger('bet');
     console.log('Received bet amount:', betAmount);
     // Ensure betAmount is provided and is a number
     if (!Number.isInteger(betAmount)) {
