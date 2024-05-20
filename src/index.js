@@ -241,7 +241,7 @@ const avatarURL = member.user.displayAvatarURL();
     let insLoseEmbed = { title: "You lost (paid insurance)!", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
     let insTieEmbed = { title: "It's a tie (paid insurance).", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
     let insPayEmbed = { title: "Insurance Payout!", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let timeoutEmbed = { title: "Time's up!", color: 0xFF0000, description: "You took more than 30 seconds to respond. The time is up and the game has canceled.", fields: [], author: { name: interaction.user.tag;, icon_url: avatarURL() } } 
+    let timeoutEmbed = { title: "Time's up!", color: 0xFF0000, description: "You took more than 30 seconds to respond. The time is up and the game has canceled.", fields: [], author: { name: interaction.user.tag, icon_url: avatarURL() } } 
     let cancelEmbed = { title: "Game canceled.", color: 0xFF0000, description: "You decided to cancel your ongoing blackjack game.", fields: [], author: { name: displayName, icon_url: avatarURL } }
     let generalEmbed = normalEmbed === false ? options.normalEmbedContent : { title: "Blackjack", color: Math.floor(Math.random() * (0xffffff + 1)), fields: [{ name: "Your hand", value: "", inline: true }, { name: `Dealer's hand`, value: "", inline: true }, { name: "Bank Balance", value: balanceString, inline: true }], author: { name: displayName, icon_url: avatarURL } }
 
