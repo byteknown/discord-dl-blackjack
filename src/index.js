@@ -38,8 +38,8 @@ const { getBank, updateBank } = require('./bank.js');
 module.exports = async (message, options = {}, betAmount) => {
 
     // Ensure betAmount is provided and is a number
-    if (typeof betAmount !== 'number' || isNaN(betAmount)) {
-        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid number.");
+    if (!Number.isInteger(betAmount)) {
+        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
     }
     // check if all the variables given are valid
     if (!message) throw new Error("[MISSING_PARAMETER] The message or interaction parameter was not provided, was null or undefined.")
