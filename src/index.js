@@ -46,7 +46,7 @@ module.exports = async (interaction, options) => {
     if (!interaction) throw new Error("[MISSING_PARAMETER] interaction parameter was not provided, was null or undefined.")
     
     // check if message and commandInteraction aren't something made up
-    if (!(message instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The message or interaction parameter provided is not valid.")
+    if (!(interaction instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The message or interaction parameter provided is not valid.")
 
     // set all the options
     if (!options) options = {} // if options were not provided, make an empty object
