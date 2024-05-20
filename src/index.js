@@ -6,7 +6,18 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../../../users.db');
 const { getBank, updateBank } = require('./bank.js');
 
+const getBankFunction = async (interaction) => {
 
+    try {
+        // Retrieve user's bank balance
+        let bankBalance = await getBank(interaction.user.id);
+
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle the error as needed
+    }
+   return bankBalance;
+}
 
 
 module.exports = async (interaction, options) => {
@@ -199,7 +210,7 @@ module.exports = async (interaction, options) => {
         // let dealercards = [testDeck2[0],testDeck2[1]]
 
    
-   let bankBalance = await getBank(interaction.user.id);
+   let bankBalance = await getBankFunction();
    let balanceString = bankBalance.toString();
 const member = interaction.member;
 const displayName = member.displayName;
