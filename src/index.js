@@ -43,10 +43,10 @@ module.exports = async (interaction, options) => {
         throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
     }
     // check if all the variables given are valid
-    if (!message) throw new Error("[MISSING_PARAMETER] The message or interaction parameter was not provided, was null or undefined.")
+    if (!interaction) throw new Error("[MISSING_PARAMETER] interaction parameter was not provided, was null or undefined.")
     
     // check if message and commandInteraction aren't something made up
-    if (!(message instanceof Discord.Message) && !(message instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The message or interaction parameter provided is not valid.")
+    if !(message instanceof Discord.CommandInteraction)) throw new Error("[INVALID_PARAMATER] The message or interaction parameter provided is not valid.")
 
     // set all the options
     if (!options) options = {} // if options were not provided, make an empty object
@@ -67,13 +67,8 @@ module.exports = async (interaction, options) => {
     }
      
     // set what type the message is
-    let commandType
-    if (message instanceof Discord.Message) {
-        commandType = "message"
-    } else if (message instanceof Discord.CommandInteraction) {
-        commandType = "interaction"
-    }
-
+    let commandType = "interaction"
+    
     options.commandType = commandType
 
     // check if options is an object
