@@ -31,5 +31,20 @@ async function updateBank(userId, newBalance) {
     });
 }
 
-module.exports = { getBank, updateBank };
+async function updatePunctuation(userId, betAmount) {
+    return new Promise((resolve, reject) => {
+        let punctuation = betAmount/1000000;
+        db.run('UPDATE leaderBoard SET punctuation = ? WHERE discordId = ?', [punctuation, userId], function(err) {
+            if (err) {
+                console.error(err.message);
+                reject(err); // Reject the promise with the error
+            } else {
+                console.log('Punctuation updated successfully.');
+                resolve(); // Resolve the promise
+            }
+        });
+    });
+}
+
+module.exports = { getBank, updateBank, updatePunctuation };
 
