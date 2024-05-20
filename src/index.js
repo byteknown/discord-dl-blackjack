@@ -531,10 +531,10 @@ if (finalResult.result === "SPLIT DOUBLE WIN-TIE") {
        updateBank(user.Id, bankBalance + betAmount*2.5);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-LOSE") {
-       updateBank(user.Id, bankBalance - betAmount*1/3?????);
+       updateBank(user.Id, bankBalance - betAmount*1/3);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-TIE") {
-       updateBank(user.Id, bankBalance - betAmount*1/3??????);
+       updateBank(user.Id, bankBalance - betAmount*1/3);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-WIN") {
        updateBank(user.Id, bankBalance + betAmount*5);
@@ -582,7 +582,7 @@ if (finalResult.result === "SPLIT TIE-DOUBLE LOSE") {
        updateBank(user.Id, bankBalance - betAmount*1.75);
       }
 if (finalResult.result === "SPLIT LOSE-DOUBLE TIE") {
-       updateBank(user.Id, bankBalance - betAmount*1.75????);
+       updateBank(user.Id, bankBalance - betAmount*1.6);
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE WIN") {
        updateBank(user.Id, bankBalance + betAmount*4.5);
