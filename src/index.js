@@ -65,7 +65,7 @@ module.exports = async (interaction, options) => {
     let starterMessage;
 
     if (commandType === "interaction" && !interaction.deferred && !interaction.replied) {
-    starterMessage = await interaction.followUp();
+    starterMessage = await interaction.deferReply();
 }
 
 // Check if the user is already playing a game
