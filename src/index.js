@@ -200,14 +200,7 @@ return {
         // let dealercards = [testDeck2[0],testDeck2[1]]
 
    
-   let bankBalance;
-getBankFunction().then((balance) => {
-    bankBalance = balance;
-    // Now you can use bankBalance here or within the scope of this .then() callback
-}).catch((error) => {
-    // Handle any errors that might occur during the retrieval of the bank balance
-    console.error('Error getting bank balance:', error);
-});
+   let bankBalance = await getBank();
    let balanceString = bankBalance.toString();
 const member = interaction.member;
 const displayName = member.displayName;
