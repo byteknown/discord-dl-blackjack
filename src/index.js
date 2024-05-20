@@ -450,7 +450,7 @@ module.exports = async (message, options) => {
             "CANCEL": cancelEmbed,
             "TIMEOUT": timeoutEmbed
         }
-
+         const user.Id = message.member.Id;
         let finalEmbed = resultingEmbed[finalResult.result]
        if (finalResult.result === "WIN") {
        updateBank(user.Id, bankBalance + betAmount*2);
