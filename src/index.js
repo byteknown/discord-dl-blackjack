@@ -236,7 +236,8 @@ module.exports = async (message, options) => {
 
    
    let bankBalance = await getBank(message.member.id);
-   let balanceString = bankBalance.toString();
+   let bankTotal = bankBalance + betAmount;
+   let balanceString = bankTotal.toString();
 
     // set the embeds
     let winEmbed = { title: "You won!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
