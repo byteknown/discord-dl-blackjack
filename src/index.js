@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 const Collect = require("./collect")
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../users.db');
-const { getBank, updateBank } = require('./bank.js');
+const { getBank, updateBank, updatePunctuation } = require('./bank.js');
 
 /** 
     * @param {Discord.Message || Discord.CommandInteraction} message The Message Object or the Interaction Object sent by the user
@@ -455,36 +455,45 @@ module.exports = async (message, options) => {
         let finalEmbed = resultingEmbed[finalResult.result]
        if (finalResult.result === "WIN") {
        updateBank(userId, bankBalance + betAmount*2);
+         updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "LOSE") {
        updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*3);
+   updatePunctuation(userId, betAmount*3);
       }
 if (finalResult.result === "DOUBLE LOSE") {
        updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT TIE-WIN") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT WIN-TIE") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT TIE-TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT WIN-WIN") {
        updateBank(userId, bankBalance + betAmount*3);
+   updatePunctuation(userId, betAmount*3);
       }
 if (finalResult.result === "SPLIT LOSE-LOSE") {
        updateBank(userId, bankBalance - betAmount);
@@ -497,45 +506,57 @@ if (finalResult.result === "SPLIT LOSE-TIE") {
       }
 if (finalResult.result === "SPLIT BLACKJACK-WIN") {
        updateBank(userId, bankBalance + betAmount*3.5);
+   updatePunctuation(userId, betAmount*3.5);
       }
 if (finalResult.result === "SPLIT WIN-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*3.5);
+   updatePunctuation(userId, betAmount*3.5);
       }
 if (finalResult.result === "SPLIT BLACKJACK-LOSE") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT LOSE-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT BLACKJACK-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*4);
+   updatePunctuation(userId, betAmount*4);
       }
 if (finalResult.result === "SPLIT BLACKJACK-TIE") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT TIE-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-LOSE") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-WIN") {
-       updateBank(userId, bankBalance);
+       updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-WIN") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-LOSE") {
        updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-WIN") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-TIE") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-LOSE") {
        updateBank(userId, bankBalance - betAmount*1/3);
@@ -545,45 +566,58 @@ if (finalResult.result === "SPLIT DOUBLE LOSE-TIE") {
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-WIN") {
        updateBank(userId, bankBalance + betAmount*5);
+   updatePunctuation(userId, betAmount*5);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*4.5);
+   updatePunctuation(userId, betAmount*4.5);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-LOSE") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*5.5);
+   updatePunctuation(userId, betAmount*5.5);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-TIE") {
        updateBank(userId, bankBalance + betAmount*3);
+   updatePunctuation(userId, betAmount*3);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT WIN-DOUBLE LOSE") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT LOSE-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT TIE-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT WIN-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*4);
+   updatePunctuation(userId, betAmount*4);
       }
 if (finalResult.result === "SPLIT LOSE-DOUBLE LOSE") {
        updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "SPLIT TIE-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*1.75);
+   updatePunctuation(userId, betAmount*1.75);
       }
 if (finalResult.result === "SPLIT WIN-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount*1.75);
+   updatePunctuation(userId, betAmount*1.75);
       }
 if (finalResult.result === "SPLIT TIE-DOUBLE LOSE") {
        updateBank(userId, bankBalance - betAmount*1.75);
@@ -593,90 +627,112 @@ if (finalResult.result === "SPLIT LOSE-DOUBLE TIE") {
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*4.5);
+   updatePunctuation(userId, betAmount*4.5);
       }
 if (finalResult.result === "SPLIT WIN-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*5);
+   updatePunctuation(userId, betAmount*5);
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE LOSE") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT LOSE-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*5.5);
+   updatePunctuation(userId, betAmount*5.5);
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT TIE-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*1.5);
+   updatePunctuation(userId, betAmount*1.5);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-DOUBLE LOSE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount);
+   updatePunctuation(userId, betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*5);
+   updatePunctuation(userId, betAmount*5);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-DOUBLE LOSE") {
        updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-DOUBLE LOSE") {
        updateBank(userId, bankBalance - betAmount/2);
+   updatePunctuation(userId, betAmount/2);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-DOUBLE TIE") {
        updateBank(userId, bankBalance - betAmount/2);
+   updatePunctuation(userId, betAmount/2);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-DOUBLE WIN") {
        updateBank(userId, bankBalance + betAmount*5.5);
+   updatePunctuation(userId, betAmount*5.5);
       }
 if (finalResult.result === "SPLIT DOUBLE WIN-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*5.5);
+   updatePunctuation(userId, betAmount*5.5);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-DOUBLE LOSE") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2);
+   updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*6);
+   updatePunctuation(userId, betAmount*6);
       }
 if (finalResult.result === "SPLIT DOUBLE BLACKJACK-DOUBLE TIE") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-DOUBLE BLACKJACK") {
        updateBank(userId, bankBalance + betAmount*2.5);
+   updatePunctuation(userId, betAmount*2.5);
       }
 if (finalResult.result === "INSURANCE PAYOUT") {
-       updateBank(userId, bankBalance + betAmount);
+       updateBank(userId, bankBalance + betAmount/2);
+   updatePunctuation(userId, betAmount/2);
       }
 if (finalResult.result === "INSURANCE WIN") {
-       updateBank(userId, bankBalance + betAmount);
+       updateBank(userId, bankBalance + betAmount/2);
+   updatePunctuation(userId, betAmount/2);
       }
 if (finalResult.result === "INSURANCE LOSE") {
-       updateBank(userId, bankBalance + betAmount);
+       updateBank(userId, bankBalance - betAmount/2);
       }
 if (finalResult.result === "INSURANCE TIE") {
        updateBank(userId, bankBalance + betAmount);
       }
 if (finalResult.result === "CANCEL") {
-       updateBank(userId, bankBalance + betAmount);
       }
 if (finalResult.result === "TIMEOUT") {
-       updateBank(userId, bankBalance + betAmount);
       }
 let finalBank = await getBank(message.member.id);
    let finalBankString = finalBank.toString();
