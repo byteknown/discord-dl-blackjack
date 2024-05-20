@@ -677,7 +677,8 @@ if (finalResult.result === "CANCEL") {
 if (finalResult.result === "TIMEOUT") {
        updateBank(userId, bankBalance + betAmount);
       }
-
+let finalBank = await getBank(message.member.id);
+   let finalBankString = finalBank.toString();
        
         if (finalResult.method !== "None") {
             finalEmbed.description = finalResult.method
@@ -691,7 +692,7 @@ if (finalResult.result === "TIMEOUT") {
           value: `Cards: ${finalResult.dcard.map(c => `[\`${c.emoji} ${c.rank}\`](https://google.com)`).join(" ")}\nTotal: ${finalResult.dcard.map(card => card.value).reduce((a, b) => b+a)}`,
           inline: true
         })
-        finalEmbed.fields.push({ name: 'Bank', value: balanceString });
+        finalEmbed.fields.push({ name: 'Bank', value: finalBankString });
         options.commandType === "message" ? message.channel.send({ embeds: [finalEmbed] }) : message.channel.send({ embeds: [finalEmbed] })
         
         
