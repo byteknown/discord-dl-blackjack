@@ -5,7 +5,7 @@ const Collect = require("./collect")
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../../../users.db');
 const { getBank, updateBank } = require('./bank.js');
-const betAmount = require('../../../commands/blackjack.js');
+const retrieve = require('../../../commands/blackjack.js');
 
 /** 
     * @param {Discord.Message || Discord.CommandInteraction} message The Message Object or the Interaction Object sent by the user
@@ -37,6 +37,7 @@ const betAmount = require('../../../commands/blackjack.js');
 
 
 module.exports = async (message, options) => {
+   const betAmount = retrieve.getBetAmount();
 console.log('Type of betAmount:', typeof betAmount);
     // Ensure betAmount is provided and is a number
     if (!Number.isInteger(betAmount)) {
