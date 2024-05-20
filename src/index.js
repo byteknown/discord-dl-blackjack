@@ -26,12 +26,6 @@ module.exports = async (message, options) => {
     options.resultEmbed === false ? options.resultEmbed = false : options.resultEmbed = true // check if the result embed should be displayed
     options.normalEmbed === false ? options.normalEmbed = false : options.normalEmbed = true // check if they want the default embed when playing
     !options.emojis ? options.emojis = {} : options.emojis
-    const betAmount = interaction.options.getInteger('bet');
-    console.log('Received bet amount:', betAmount);
-    // Ensure betAmount is provided and is a number
-    if (!Number.isInteger(betAmount)) {
-        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
-    }
    
     options.emojis = {
         clubs: options.emojis?.clubs || "♣️",
@@ -120,6 +114,12 @@ return {
     let copiedEmbed = {
         content: "",
         value: ""
+    }
+    const betAmount = message.options.getInteger('bet');
+    console.log('Received bet amount:', betAmount);
+    // Ensure betAmount is provided and is a number
+    if (!Number.isInteger(betAmount)) {
+        throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
     }
 
     // set the decks
