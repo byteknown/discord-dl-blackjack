@@ -432,7 +432,6 @@ module.exports = async (message, options) => {
          updatePunctuation(userId, betAmount*2);
       }
 if (finalResult.result === "LOSE") {
-       updateBank(userId, bankBalance - betAmount);
       }
 if (finalResult.result === "TIE") {
        updateBank(userId, bankBalance + betAmount);
@@ -702,7 +701,7 @@ if (finalResult.result === "INSURANCE LOSE") {
        updateBank(userId, bankBalance - betAmount/2);
       }
 if (finalResult.result === "INSURANCE TIE") {
-       updateBank(userId, bankBalance + betAmount);
+       updateBank(userId, bankBalance + betAmount*1.5);
       }
 if (finalResult.result === "CANCEL") {
       }
