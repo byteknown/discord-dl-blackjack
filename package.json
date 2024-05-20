@@ -1,6 +1,6 @@
 {
   "name": "discord-dl-blackjack",
-  "version": "4.2.3",
+  "version": "4.2.4",
   "description": "A blackjack game for Discord",
   "main": "index.js",
   "typings": "types/index.d.ts",
