@@ -3,9 +3,36 @@ const games = new Set();
 const Discord = require("discord.js");
 const Collect = require("./collect")
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../../../users.db');
+const db = new sqlite3.Database('../users.db');
 const { getBank, updateBank } = require('./bank.js');
 
+/** 
+    * @param {Discord.Message || Discord.CommandInteraction} message The Message Object or the Interaction Object sent by the user
+    * @param {object} options The options object (optional)
+    * @returns Promise<Object>
+    * @async
+    * @example
+    * const blackjack = require("discord-blackjack")
+    * // other code here
+    *
+    * // if you are using prefix commands
+    * client.on("messageCreate", async message => {
+    *     if (message.content === "!blackjack") {
+    *         blackjack(message)        
+    *     }
+    * })
+
+    * // if you are using slash commands
+    * client.on("interactionCreate", async interaction => {
+    *     if (!interaction.isCommand) return;
+    *     
+    *     if (interaction.commandName === "blackjack") {
+    *         blackjack(interaction)
+    *     }
+    * })
+    * 
+    * // other code here
+*/
 
 
 module.exports = async (message, options) => {
@@ -26,15 +53,15 @@ module.exports = async (message, options) => {
     options.resultEmbed === false ? options.resultEmbed = false : options.resultEmbed = true // check if the result embed should be displayed
     options.normalEmbed === false ? options.normalEmbed = false : options.normalEmbed = true // check if they want the default embed when playing
     !options.emojis ? options.emojis = {} : options.emojis
-   
+    
     options.emojis = {
         clubs: options.emojis?.clubs || "♣️",
         spades: options.emojis?.spades || "♠️",
         hearts: options.emojis?.hearts || "♥️",
         diamonds: options.emojis?.diamonds || "♦️"
     }
-   
-    // set what type the interaction is
+     
+    // set what type the message is
     let commandType
     if (message instanceof Discord.Message) {
         commandType = "message"
@@ -64,6 +91,7 @@ module.exports = async (message, options) => {
 
     let starterMessage;
 
+    // defer the reply if the commandType is interaction and if the reply has not been deffered
     if (commandType === "interaction" && !message.deferred && !message.replied) {
         starterMessage = await message.deferReply()
     } else if (commandType === "message") {
@@ -88,15 +116,6 @@ module.exports = async (message, options) => {
             dcard: "None"
         }
     }
-
-// Return a default result if needed
-return {
-    result: "None",
-    method: "None",
-    ycard: "None",
-    dcard: "None"
-};
-    
     
 
     // set all the variables
@@ -108,7 +127,7 @@ return {
     let split = options.split
     let resultEmbed = options.resultEmbed
     let normalEmbed = options.normalEmbed
-    let userId = interaction.user.id
+    let userId = message.member.id
     let isSoft = false
     let method = "None"
     let copiedEmbed = {
@@ -216,33 +235,29 @@ return {
         // let dealercards = [testDeck2[0],testDeck2[1]]
 
    
-   let bankBalance = await getBank();
+   let bankBalance = await getBank(message.member.id);
    let balanceString = bankBalance.toString();
-const member = interaction.member;
-const displayName = member.displayName;
-const avatarURL = member.user.displayAvatarURL();
-
 
     // set the embeds
-    let winEmbed = { title: "You won!", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let loseEmbed = { title: "You lost!", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let tieEmbed = { title: "It's a tie.", color: 0xFFFF00, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitWinEmbed = { title: "You split and won both hands!", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitLoseEmbed = { title: "You split and lost both hands!", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitTieEmbed = { title: "You split and tied both hands!", color: 0xFFFF00, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitTieWinEmbed = { title: "You split: First hand ties and second hand wins.", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitWinTieEmbed = { title: "You split: First hand wins and second hand ties.", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitTieLoseEmbed = { title: "You split: First hand ties and second hand loses.", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitLoseTieEmbed = { title: "You split: First hand loses and second hand ties.", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitWinLoseEmbed = { title: "You split: First hand wins and second hand loses.", color: 0xFFFF00, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let splitLoseWinEmbed = { title: "You split: First hand loses and second hand wins.", color: 0xFFFF00, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let insWinEmbed = { title: "You won (paid insurance)!", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let insLoseEmbed = { title: "You lost (paid insurance)!", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let insTieEmbed = { title: "It's a tie (paid insurance).", color: 0xFF0000, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let insPayEmbed = { title: "Insurance Payout!", color: 0x008800, description: "", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let timeoutEmbed = { title: "Time's up!", color: 0xFF0000, description: "You took more than 30 seconds to respond. The time is up and the game has canceled.", fields: [], author: { name: interaction.user.tag, icon_url: avatarURL() } } 
-    let cancelEmbed = { title: "Game canceled.", color: 0xFF0000, description: "You decided to cancel your ongoing blackjack game.", fields: [], author: { name: displayName, icon_url: avatarURL } }
-    let generalEmbed = normalEmbed === false ? options.normalEmbedContent : { title: "Blackjack", color: Math.floor(Math.random() * (0xffffff + 1)), fields: [{ name: "Your hand", value: "", inline: true }, { name: `Dealer's hand`, value: "", inline: true }, { name: "Bank Balance", value: balanceString, inline: true }], author: { name: displayName, icon_url: avatarURL } }
+    let winEmbed = { title: "You won!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let loseEmbed = { title: "You lost!", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let tieEmbed = { title: "It's a tie.", color: 0xFFFF00, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitWinEmbed = { title: "You split and won both hands!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitLoseEmbed = { title: "You split and lost both hands!", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitTieEmbed = { title: "You split and tied both hands!", color: 0xFFFF00, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitTieWinEmbed = { title: "You split: First hand ties and second hand wins.", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitWinTieEmbed = { title: "You split: First hand wins and second hand ties.", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitTieLoseEmbed = { title: "You split: First hand ties and second hand loses.", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitLoseTieEmbed = { title: "You split: First hand loses and second hand ties.", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitWinLoseEmbed = { title: "You split: First hand wins and second hand loses.", color: 0xFFFF00, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let splitLoseWinEmbed = { title: "You split: First hand loses and second hand wins.", color: 0xFFFF00, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let insWinEmbed = { title: "You won (paid insurance)!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let insLoseEmbed = { title: "You lost (paid insurance)!", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let insTieEmbed = { title: "It's a tie (paid insurance).", color: 0xFF0000, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let insPayEmbed = { title: "Insurance Payout!", color: 0x008800, description: "", fields: [], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
+    let timeoutEmbed = { title: "Time's up!", color: 0xFF0000, description: "You took more than 30 seconds to respond. The time is up and the game has canceled.", fields: [], author: { name: message.member.user.tag, icon_url: message.member.displayAvatarURL() } } 
+    let cancelEmbed = { title: "Game canceled.", color: 0xFF0000, description: "You decided to cancel your ongoing blackjack game.", fields: [], author: { name: message.member.displayName, icon_url: message.member.displayAvatarURL() } }
+    let generalEmbed = normalEmbed === false ? options.normalEmbedContent : { title: "Blackjack", color: Math.floor(Math.random() * (0xffffff + 1)), fields: [{ name: "Your hand", value: "", inline: true }, { name: `Dealer's hand`, value: "", inline: true }, { name: "Bank Balance", value: balanceString, inline: true }], author: { name: message.member.displayName, icon_url: message.member.user.displayAvatarURL() } }
 
     // set the filters
     let allFilter = ["h", "hit", "s", "stand", "cancel"]
@@ -310,15 +325,7 @@ const avatarURL = member.user.displayAvatarURL();
             winEmbed.description = "You won with blackjack."
             winEmbed.fields.push({ name: "Your hand", value: `Cards: [\`${yourcards[0].emoji} ${yourcards[0].rank}\`](https://google.com) [\`${yourcards[1].emoji} ${yourcards[1].rank}\`](https://google.com)\nTotal: ${yourvalue}` })
             winEmbed.fields.push({ name: "Dealer's hand", value: `Card: [\`${dealercards[0].emoji} ${dealercards[0].rank}\`](https://google.com) [\`${dealercards[1].emoji} ${dealercards[1].rank}\`](https://google.com)\nTotal: ${dealervalue}` })
-            if (commandType === "interaction") {
-    interaction.reply({ embeds: [winEmbed] }).then(() => {
-        // This code block will execute after the reply is sent successfully
-        console.log("Reply sent successfully");
-    }).catch((error) => {
-        // Handle any errors that might occur during sending the reply
-        console.error("Error sending reply:", error);
-    });
-}
+            commandType === "message" ? message.channel.send({ embeds: [winEmbed] }) : message.channel.send({ embeds: [winEmbed] })
         }
 
         return {
@@ -335,9 +342,7 @@ const avatarURL = member.user.displayAvatarURL();
             tieEmbed.description = "You tied (both had blackjack)."
             tieEmbed.fields.push({ name: "Your hand", value: `Cards: [\`${yourcards[0].emoji} ${yourcards[0].rank}\`](https://google.com) [\`${yourcards[1].emoji} ${yourcards[1].rank}\`](https://google.com)\nTotal: ${yourvalue}` })
             tieEmbed.fields.push({ name: "Dealer's hand", value: `Cards: [\`${dealercards[0].emoji} ${dealercards[0].rank}\`](https://google.com) [\`${dealercards[1].emoji} ${dealercards[1].rank}\`](https://google.com)\nTotal: ${dealervalue}` })
-            if (commandType === "interaction") {
-    await interaction.reply({ embeds: [winEmbed] });
-} 
+            commandType === "message" ? message.channel.send({ embeds: [tieEmbed] }) : message.channel.send({ embeds: [tieEmbed] })
         }
 
         return {
@@ -353,9 +358,13 @@ const avatarURL = member.user.displayAvatarURL();
     dealervalue = dealercards.map(c => c.value).reduce((a, b) => b + a); // Update dealer's total value
 }
 
-    const editReply = async (interaction, reply, buttons) => {
-    return await interaction.editReply({ embeds: [reply], components: buttons ? [row1, row2] : [] });
-};
+    const editReply = async (msg, reply, commandType) => {
+        if (commandType === "message") {
+            return await msg.edit({ embeds: [reply], components: buttons ? [row1, row2] : [] })
+        } else {
+            return await message.editReply({ embeds: [reply], components: buttons ? [row1, row2] : [] })
+        }
+    }
     
     let currentMessage = await editReply(starterMessage, generalEmbed, commandType); 
     let finalResult = await (options.buttons ? new Collect().buttonCollect(currentMessage, userId, yourcards, dealercards, currentDeck, options) : new Collect().messageCollect(currentMessage, userId, yourcards, dealercards, currentDeck, options, allFilter))
@@ -510,7 +519,7 @@ if (finalResult.result === "SPLIT DOUBLE WIN-LOSE") {
        updateBank(user.Id, bankBalance + betAmount*2);
       }
 if (finalResult.result === "SPLIT DOUBLE LOSE-WIN") {
-       updateBank(user.Id, bankBalance - betAmount);
+       updateBank(user.Id, bankBalance);
       }
 if (finalResult.result === "SPLIT DOUBLE TIE-TIE") {
        updateBank(user.Id, bankBalance + betAmount);
@@ -579,7 +588,7 @@ if (finalResult.result === "SPLIT TIE-DOUBLE LOSE") {
        updateBank(user.Id, bankBalance - betAmount*1.75);
       }
 if (finalResult.result === "SPLIT LOSE-DOUBLE TIE") {
-       updateBank(user.Id, bankBalance - betAmount*1.6);
+       updateBank(user.Id, bankBalance - betAmount*1.75);
       }
 if (finalResult.result === "SPLIT BLACKJACK-DOUBLE WIN") {
        updateBank(user.Id, bankBalance + betAmount*4.5);
@@ -678,12 +687,12 @@ if (finalResult.result === "TIMEOUT") {
             finalEmbed.fields.push({ name: `Your 2nd hand`, value: `Cards: ${finalResult.ycard2.map(c => `[\`${c.emoji} ${c.rank}\`](https://google.com)`).join(" ")}\nTotal: ${finalResult.ycard2.map(card => card.value).reduce((a, b) => b+a)}`, inline: true })
         }
         finalEmbed.fields.push({ 
-          name: `${interaction.client.user.username}'s hand`, 
+          name: `${message.client.user.username}'s hand`, 
           value: `Cards: ${finalResult.dcard.map(c => `[\`${c.emoji} ${c.rank}\`](https://google.com)`).join(" ")}\nTotal: ${finalResult.dcard.map(card => card.value).reduce((a, b) => b+a)}`,
           inline: true
         })
         finalEmbed.fields.push({ name: 'Bank', value: balanceString });
-        interaction.reply({ embeds: [finalEmbed] });
+        options.commandType === "message" ? message.channel.send({ embeds: [finalEmbed] }) : message.channel.send({ embeds: [finalEmbed] })
         
         
     }
