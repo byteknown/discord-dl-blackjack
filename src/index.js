@@ -470,7 +470,7 @@ if (finalResult.result === "BLACKJACK") {
 if (finalResult.result === "SPLIT TIE-WIN") {
        updateBank(user.Id, bankBalance + betAmount*2);
       }
-if (finalResult.result === "SPLIT WIN-TIE"") {
+if (finalResult.result === "SPLIT WIN-TIE") {
        updateBank(user.Id, bankBalance + betAmount*2);
       }
 if (finalResult.result === "SPLIT TIE-TIE") {
