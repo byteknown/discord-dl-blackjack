@@ -36,7 +36,7 @@ const { getBank, updateBank } = require('./bank.js');
 
 
 module.exports = async (message, options = {}, betAmount) => {
-
+console.log('Type of betAmount:', typeof betAmount);
     // Ensure betAmount is provided and is a number
     if (!Number.isInteger(betAmount)) {
         throw new Error("[INVALID_PARAMETER] The betAmount parameter provided is not a valid integer.");
