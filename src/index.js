@@ -312,8 +312,14 @@ const avatarURL = member.user.displayAvatarURL();
             winEmbed.fields.push({ name: "Your hand", value: `Cards: [\`${yourcards[0].emoji} ${yourcards[0].rank}\`](https://google.com) [\`${yourcards[1].emoji} ${yourcards[1].rank}\`](https://google.com)\nTotal: ${yourvalue}` })
             winEmbed.fields.push({ name: "Dealer's hand", value: `Card: [\`${dealercards[0].emoji} ${dealercards[0].rank}\`](https://google.com) [\`${dealercards[1].emoji} ${dealercards[1].rank}\`](https://google.com)\nTotal: ${dealervalue}` })
             if (commandType === "interaction") {
-    await interaction.reply({ embeds: [winEmbed] });
-} 
+    interaction.reply({ embeds: [winEmbed] }).then(() => {
+        // This code block will execute after the reply is sent successfully
+        console.log("Reply sent successfully");
+    }).catch((error) => {
+        // Handle any errors that might occur during sending the reply
+        console.error("Error sending reply:", error);
+    });
+}
         }
 
         return {
