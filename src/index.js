@@ -6,33 +6,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../users.db');
 const { getBank, updateBank, updatePunctuation } = require('./bank.js');
 
-/** 
-    * @param {Discord.Message || Discord.CommandInteraction} message The Message Object or the Interaction Object sent by the user
-    * @param {object} options The options object (optional)
-    * @returns Promise<Object>
-    * @async
-    * @example
-    * const blackjack = require("discord-blackjack")
-    * // other code here
-    *
-    * // if you are using prefix commands
-    * client.on("messageCreate", async message => {
-    *     if (message.content === "!blackjack") {
-    *         blackjack(message)        
-    *     }
-    * })
 
-    * // if you are using slash commands
-    * client.on("interactionCreate", async interaction => {
-    *     if (!interaction.isCommand) return;
-    *     
-    *     if (interaction.commandName === "blackjack") {
-    *         blackjack(interaction)
-    *     }
-    * })
-    * 
-    * // other code here
-*/
 
 
 module.exports = async (message, options) => {
